@@ -1,8 +1,45 @@
-# eRetailShop-Backend
+# eRetailShop Backend
 
-A backend of retail management application API and payment methods to support retail management Frontend.
+REST API for a retail shop: products and stock, clients, orders and sales, users with roles, and mobile money payments (MTN MoMo sandbox).
 
-- API to manage inventory
-- API to manage sales
-- API to manage users
-- API to manage payment
+## Features
+
+- **Inventory**
+  - Products with categories, buying and selling price, stock on hand and minimum stock
+  - Update the stock count when items are sold
+- **Sales**
+  - Orders with an invoice number, tax, net and total price, and payment method
+  - Sale lines that link a product to an order
+- **Clients**
+  - Create, list, update, delete
+- **Users and roles**
+  - Login with a token that lasts one hour
+  - First-login password change
+  - Three profiles: store manager (1), inventory manager (2), cashier (3)
+- **Payments**
+  - Request a mobile money payment and check its status (sandbox)
+
+## Tech stack
+
+- Node.js
+- Express
+- Sequelize and sequelize-cli
+- PostgreSQL
+- JSON Web Tokens and bcrypt
+- Joi, for request validation
+- axios, for the payment provider calls
+- Vitest, for tests
+
+## Requirements
+
+- Node.js 20 or newer
+- PostgreSQL, running on your machine, with a user that can create databases
+
+## Setup
+
+```
+npm install
+cp .env.example .env        # then edit .env with your own values
+npm run db:setup            # creates the database, the tables and the sample data
+npm start
+```
