@@ -1,11 +1,15 @@
 // Login, password change and MoMo token routes, against the test database.
 // Needs: NODE_ENV=test database created and migrated (see README).
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
 import request from "supertest";
 import bcrypt from "bcrypt";
-import app from "../app";
-import db from "../server/models";
+// App modules are CommonJS: load them with require so the tests share the
+// exact instances the app uses (an ESM import would load separate copies).
+const require = createRequire(import.meta.url);
+const app = require("../app");
+const db = require("../server/models");
 
 const { Users } = db;
 const PASSWORD = "Start#12345";

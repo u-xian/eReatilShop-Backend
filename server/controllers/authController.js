@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const Users = require("../models").Users;
 const generateAuthToken = require("../services/generateAuthenticationToken");
+const { wrapController } = require("../middleware/asyncHandler");
 
 const authCrontroller = {
   auth: async (req, res) => {
@@ -75,4 +76,5 @@ function validatePasswordChange(body) {
   return schema.validate(body);
 }
 
-module.exports = authCrontroller;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(authCrontroller);

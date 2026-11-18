@@ -1,16 +1,16 @@
 const _ = require("lodash");
 const Clients = require("../models").Clients;
 const { validate } = require("../models/clients");
+const { wrapController } = require("../middleware/asyncHandler");
 
 const clientsController = {
   create: async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const client = new Clients(
+    const client = await Clients.create(
       _.pick(req.body, ["name", "address", "phone", "email"]),
     );
-    client = await client.save();
 
     if (!client) return res.status(404).send("client  not found");
     res
@@ -49,4 +49,5 @@ const clientsController = {
   },
 };
 
-module.exports = clientsController;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(clientsController);

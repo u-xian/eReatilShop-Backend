@@ -1,22 +1,22 @@
 [
   {
     "profilename": "Store manager",
-    "profile_description": "Manage delete products, clients, profiles and users."
+    "description": "Manage delete products, clients, profiles and users."
   },
   {
     "profilename": "Inventory manager",
-    "profile_description": "Manage inventory levels, track stock, and update product information."
+    "description": "Manage inventory levels, track stock, and update product information."
   },
   {
     "profilename": "Cashier",
-    "profile_description": "Process sales and handle customer transactions."
+    "description": "Process sales and handle customer transactions."
   },
   {
     "profilename": "Purchasing officer",
-    "profile_description": "Responsible for procuring goods and services, negotiating with suppliers, and managing purchase orders."
+    "description": "Responsible for procuring goods and services, negotiating with suppliers, and managing purchase orders."
   },
   {
     "profilename": "Branch manager",
-    "profile_description": "Oversee daily operations and manage staff at a specific branch location."
+    "description": "Oversee daily operations and manage staff at a specific branch location."
   }
 ]

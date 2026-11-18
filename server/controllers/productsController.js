@@ -1,6 +1,8 @@
+const Joi = require("joi");
 const _ = require("lodash");
 const Products = require("../models").Products;
 const { validate } = require("../models/products");
+const { wrapController } = require("../middleware/asyncHandler");
 
 const productsCrontroller = {
   create: async (req, res) => {
@@ -69,6 +71,11 @@ const productsCrontroller = {
       .json({ data: { status: 1, statusMessage: "Product updated!" } });
   },
   updateProductCount: async (req, res) => {
+    const { error } = Joi.object({
+      sales: Joi.number().integer().min(1).required(),
+    }).validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     const salesCount = Number(req.body.sales);
     let product = await Products.findByPk(req.params.productId);
     if (!product) return res.status(404).send("Product  not found");
@@ -89,4 +96,5 @@ const productsCrontroller = {
   },
 };
 
-module.exports = productsCrontroller;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(productsCrontroller);

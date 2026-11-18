@@ -1,10 +1,14 @@
 // Token signing (services/generateAuthenticationToken) and checking
 // (middleware/auth) must agree. No database needed.
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { createRequire } from "node:module";
 import jwt from "jsonwebtoken";
-import generateAuthToken from "../server/services/generateAuthenticationToken";
-import auth from "../server/middleware/auth";
-import profileCheck from "../server/middleware/profileCheck";
+// App modules are CommonJS: load them with require so the tests share the
+// exact instances the app uses (an ESM import would load separate copies).
+const require = createRequire(import.meta.url);
+const generateAuthToken = require("../server/services/generateAuthenticationToken");
+const auth = require("../server/middleware/auth");
+const profileCheck = require("../server/middleware/profileCheck");
 
 const KEY = "unit_test_key";
 let savedKey;

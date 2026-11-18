@@ -7,7 +7,7 @@ module.exports = {
     profilesData.map((c) => {
       profiles.push({
         profilename: c.profilename,
-        profile_description: c.profile_description,
+        description: c.description,
         createdAt: new Date(),
         updatedAt: new Date(),
       });

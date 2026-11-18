@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const Order = require("../models").Order;
 const { validate } = require("../models/order");
+const { wrapController } = require("../middleware/asyncHandler");
 
 const orderController = {
   create: async (req, res) => {
@@ -63,4 +64,5 @@ const orderController = {
   },
 };
 
-module.exports = orderController;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(orderController);

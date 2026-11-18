@@ -42,6 +42,39 @@ const createMomoToken = async () => {
   return tokenResponse.data;
 };
 
+// Server-side cache of the MoMo access token, so payments and status checks
+// reuse one token instead of creating a new MoMo API user on every request.
+// The token never leaves the server through the payment routes.
+const REFRESH_MARGIN_MS = 60 * 1000; // get a new token 1 minute before expiry
+let cachedToken = null; // { accessToken, expiresAt }
+let pendingToken = null; // shared by concurrent callers while a token is fetched
+
+const getMomoToken = async () => {
+  if (cachedToken && Date.now() < cachedToken.expiresAt - REFRESH_MARGIN_MS)
+    return cachedToken.accessToken;
+
+  if (!pendingToken) {
+    pendingToken = createMomoToken()
+      .then((data) => {
+        const lifetimeMs = Number(data.expires_in) > 0 ? data.expires_in * 1000 : 0;
+        cachedToken = {
+          accessToken: data.access_token,
+          expiresAt: Date.now() + lifetimeMs,
+        };
+        return data.access_token;
+      })
+      .finally(() => {
+        pendingToken = null;
+      });
+  }
+  return pendingToken;
+};
+
+// Called when MoMo rejects the token (401), and by tests.
+const clearMomoTokenCache = () => {
+  cachedToken = null;
+};
+
 // Route handler for POST /generatetoken (mounted behind the auth middleware).
 const CreateTokenAPI = async (req, res) => {
   try {
@@ -55,3 +88,5 @@ const CreateTokenAPI = async (req, res) => {
 
 module.exports = CreateTokenAPI;
 module.exports.createMomoToken = createMomoToken;
+module.exports.getMomoToken = getMomoToken;
+module.exports.clearMomoTokenCache = clearMomoTokenCache;

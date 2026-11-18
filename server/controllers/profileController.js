@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const { validate } = require("../models/profiles");
 const Profiles = require("../models").Profiles;
+const { wrapController } = require("../middleware/asyncHandler");
 
 const profileCrontroller = {
   create: async (req, res) => {
@@ -51,4 +52,5 @@ const profileCrontroller = {
   },
 };
 
-module.exports = profileCrontroller;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(profileCrontroller);

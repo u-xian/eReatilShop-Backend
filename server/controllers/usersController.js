@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const Users = require("../models").Users;
 const { validate } = require("../models/users");
+const { wrapController } = require("../middleware/asyncHandler");
 
 const usersCrontroller = {
   create: async (req, res) => {
@@ -64,4 +65,5 @@ const usersCrontroller = {
   },
 };
 
-module.exports = usersCrontroller;
+// Errors thrown by any handler go to middleware/errorHandler.js.
+module.exports = wrapController(usersCrontroller);
