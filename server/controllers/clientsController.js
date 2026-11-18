@@ -6,12 +6,10 @@ const clientsController = {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const client = await Clients.create({
-      name: req.body.name,
-      address: req.body.address,
-      phone: req.body.phone,
-      email: req.body.email,
-    });
+    const client = new Clients(
+      _.pick(req.body, ["name", "address", "phone", "email"]),
+    );
+    client = await client.save();
 
     if (!client) return res.status(404).send("client  not found");
     res
@@ -34,7 +32,10 @@ const clientsController = {
 
     let client = await Clients.findByPk(req.params.clientId);
     if (!client) return res.status(404).send("client  not found");
-    await client.update(req.body, { fields: Object.keys(req.body) });
+    await client.update(
+      _.pick(req.body, ["name", "address", "phone", "email"]),
+    );
+
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "Client updated!" } });

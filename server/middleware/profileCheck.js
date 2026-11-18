@@ -1,6 +1,19 @@
 require("dotenv").config();
 
 const profileCheck = {
+  allow:
+    (...ids) =>
+    (req, res, next) => {
+      // 401 Unauthorized
+      // 403 Forbidden
+
+      if (!req.user) return res.status(401).send("Access denied. No user");
+      if (!ids.includes(Number(req.user.profileid))) return next();
+      return res
+        .status(403)
+        .send("Access denied. You dont have the right profile");
+    },
+
   isStoreManager: (req, res, next) => {
     // 401 Unauthorized
     // 403 Forbidden

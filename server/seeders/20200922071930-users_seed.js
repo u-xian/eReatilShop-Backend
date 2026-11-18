@@ -12,13 +12,14 @@ module.exports = {
 
     const usersdata = Array.from({ length: COUNT }, () => ({
       name: faker.person.fullName(),
-      username: faker.internet.userName(),
+      username: faker.internet.username(),
       email: faker.internet.email({ provider: "eretailshop.com" }),
       phone: faker.phone.number(),
-      shopId: faker.number.int({ min: 1, max: 5 }),
+      shopId: faker.number.int({ min: 1, max: 10 }),
       password: pwd,
       status: true,
       first_login_flag: true,
+      profileid: faker.number.int({ min: 1, max: 5 }),
       createdAt: new Date(),
       updatedAt: new Date(),
     }));

@@ -30,10 +30,10 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       buyingPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       sellingPrice: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
       },
       categoryId: {
         type: Sequelize.INTEGER,

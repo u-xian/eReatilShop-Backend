@@ -5,11 +5,19 @@ const saleController = require("../controllers/saleController");
 
 const saleRoute = express.Router();
 
-saleRoute.get("/sale", [auth, allow(1, 3)], saleController.list);
+saleRoute.get("/sale", [auth, profileCheck.allow(1, 3)], saleController.list);
 
-saleRoute.get("/sale/:saleId", [auth, allow(1, 3)], saleController.listById);
+saleRoute.get(
+  "/sale/:saleId",
+  [auth, profileCheck.allow(1, 3)],
+  saleController.listById,
+);
 
-saleRoute.post("/sale", [auth, allow(1, 3)], saleController.create);
+saleRoute.post(
+  "/sale",
+  [auth, profileCheck.allow(1, 3)],
+  saleController.create,
+);
 
 saleRoute.put(
   "/sale/:saleId",

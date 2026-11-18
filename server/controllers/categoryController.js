@@ -33,7 +33,8 @@ const categoryCrontroller = {
 
     let category = await Category.findByPk(req.params.categoryId);
     if (!category) return res.status(404).send("Category  not found");
-    await category.update(req.body, { fields: Object.keys(req.body) });
+    await category.update(_.pick(req.body, ["name"]));
+
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "Category updated!" } });

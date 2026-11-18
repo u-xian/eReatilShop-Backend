@@ -6,7 +6,7 @@ module.exports = {
     let profiles = [];
     profilesData.map((c) => {
       profiles.push({
-        name: c.name,
+        profilename: c.profilename,
         profile_description: c.profile_description,
         createdAt: new Date(),
         updatedAt: new Date(),

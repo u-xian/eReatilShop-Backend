@@ -9,7 +9,7 @@ const profileCrontroller = {
     if (error) return res.status(400).send(error.details[0].message);
 
     const profile = await Profiles.create({
-      profilename: req.body.name,
+      profilename: req.body.profilename,
     });
 
     if (!profile) return res.status(404).send("profile  not found");

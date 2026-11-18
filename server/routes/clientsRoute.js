@@ -5,19 +5,27 @@ const clientsCrontroller = require("../controllers/clientsController");
 
 const clientsRoute = express.Router();
 
-clientsRoute.get("/clients", [auth, allow(1, 3)], clientsCrontroller.list);
+clientsRoute.get(
+  "/clients",
+  [auth, profileCheck.allow(1, 3)],
+  clientsCrontroller.list,
+);
 
 clientsRoute.get(
   "/clients/:clientId",
-  [auth, allow(1, 3)],
+  [auth, profileCheck.allow(1, 3)],
   clientsCrontroller.listById,
 );
 
-clientsRoute.post("/clients", [auth, allow(1, 3)], clientsCrontroller.create);
+clientsRoute.post(
+  "/clients",
+  [auth, profileCheck.allow(1, 3)],
+  clientsCrontroller.create,
+);
 
 clientsRoute.put(
   "/clients/:clientId",
-  [auth, allow(1, 3)],
+  [auth, profileCheck.allow(1, 3)],
   clientsCrontroller.update,
 );
 

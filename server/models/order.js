@@ -1,6 +1,8 @@
 "use strict";
 const Joi = require("joi");
 const { Model } = require("sequelize");
+const generateInvoiceNumber = require("../services/generateInvoiceNumber");
+
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**

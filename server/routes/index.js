@@ -1,4 +1,3 @@
-displayRoutes = require("express-routemap");
 const express = require("express");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
@@ -14,38 +13,30 @@ const productsRoute = require("./productsRoute");
 const orderRoute = require("./orderRoute");
 const saleRoute = require("./saleRoute");
 const momoRoute = require("./momoRoute");
+const shopRoute = require("./shopRoute");
 
-// Set up the express app
-const app = express();
+const router = express.Router();
 
-// Log requests to the console.
-app.use(logger("dev"));
-
-// Parse incoming requests data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Setup a default catch-all route that sends back a welcome message in JSON format.
-
-app.get("/api/v1/", (req, res) =>
+router.get("/", (req, res) =>
   res.status(200).send({
     message: "Welcome to the eRetailShop Backend API",
-  })
+  }),
 );
 //Authentication
-app.use("/api/v1/", authRoute);
+router.use("/", authRoute);
 
 //Features routes
-app.use("/api/v1/", usersRoute);
-app.use("/api/v1/", categoryRoute);
-app.use("/api/v1/", clientsRoute);
-app.use("/api/v1/", productsRoute);
-app.use("/api/v1/", orderRoute);
-app.use("/api/v1/", saleRoute);
-app.use("/api/v1/", profileRoute);
+router.use("/", usersRoute);
+router.use("/", categoryRoute);
+router.use("/", clientsRoute);
+router.use("/", productsRoute);
+router.use("/", orderRoute);
+router.use("/", saleRoute);
+router.use("/", profileRoute);
+router.use("/", shopRoute);
 //Momo Payment
-app.use("/api/v1/", momoRoute);
+router.use("/", momoRoute);
 
 //Get routes path
-//displayRoutes(app);
-module.exports = app;
+//displayRoutes(router);
+module.exports = router;

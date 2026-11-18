@@ -28,6 +28,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Users",
+      // Never return the password hash unless asked for explicitly with
+      // Users.scope("withPassword") (login and password change only).
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: { include: ["password"] },
+        },
+      },
     },
     // Class Method
   );

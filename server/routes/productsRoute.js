@@ -17,19 +17,19 @@ productsRoute.get(
 
 productsRoute.post(
   "/products",
-  [auth, allow(1, 2)],
+  [auth, profileCheck.allow(1, 2)],
   productsCrontroller.create,
 );
 
 productsRoute.put(
   "/products/updateproductcount/:productId",
-  [auth, allow(1, 2)],
+  [auth, profileCheck.allow(1, 2)],
   productsCrontroller.updateProductCount,
 );
 
 productsRoute.put(
   "/products/:productId",
-  [auth, allow(1, 2)],
+  [auth, profileCheck.allow(1, 2)],
   productsCrontroller.update,
 );
 

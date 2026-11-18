@@ -1,7 +1,6 @@
 const _ = require("lodash");
 const Order = require("../models").Order;
 const { validate } = require("../models/order");
-const generateInvoiceNumber = require("../services/generateInvoiceNumber");
 
 const orderController = {
   create: async (req, res) => {
@@ -41,7 +40,17 @@ const orderController = {
 
     let order = await Order.findByPk(req.params.orderId);
     if (!order) return res.status(404).send("Order not found");
-    await order.update(req.body, { fields: Object.keys(req.body) });
+    await order.update(
+      _.pick(req.body, [
+        "customerId",
+        "sellerId",
+        "tax",
+        "netPrice",
+        "totalPrice",
+        "paymentMethod",
+        "externalId",
+      ]),
+    );
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "Order updated!" } });

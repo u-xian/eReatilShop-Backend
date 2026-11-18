@@ -26,6 +26,7 @@ const shopController = {
         "status",
       ]),
     );
+    shop = await shop.save();
 
     if (!shop) return res.status(404).send("Shop  not found");
     res

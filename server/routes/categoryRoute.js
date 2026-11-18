@@ -11,13 +11,13 @@ categoryRoute.get("/category/:categoryId", auth, categoryCrontroller.listById);
 
 categoryRoute.post(
   "/category",
-  [auth, allow(1, 2)],
+  [auth, profileCheck.allow(1, 2)],
   categoryCrontroller.create,
 );
 
 categoryRoute.put(
   "/category/:categoryId",
-  [auth, allow(1, 2)],
+  [auth, profileCheck.allow(1, 2)],
   categoryCrontroller.update,
 );
 

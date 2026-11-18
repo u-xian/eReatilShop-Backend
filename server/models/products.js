@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       inventoryshipped: DataTypes.INTEGER,
       inventoryonhand: DataTypes.INTEGER,
       minimumurequired: DataTypes.INTEGER,
-      buyingPrice: DataTypes.INTEGER,
-      sellingPrice: DataTypes.INTEGER,
+      buyingPrice: DataTypes.FLOAT,
+      sellingPrice: DataTypes.FLOAT,
       categoryId: DataTypes.INTEGER,
     },
     {
@@ -40,8 +40,8 @@ function validateProduct(product) {
     imageUrl: Joi.string().uri().required(),
     startinginventory: Joi.number().integer().required(),
     minimumurequired: Joi.number().integer().required(),
-    buyingPrice: Joi.number().integer().required(),
-    sellingPrice: Joi.number().integer().required(),
+    buyingPrice: Joi.number().min(0).required(),
+    sellingPrice: Joi.number().min(0).required(),
     categoryId: Joi.number().integer().required(),
   });
 

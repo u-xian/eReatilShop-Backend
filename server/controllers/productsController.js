@@ -12,6 +12,7 @@ const productsCrontroller = {
       _.pick(req.body, [
         "productname",
         "productnumber",
+        "imageUrl",
         "startinginventory",
         "minimumurequired",
         "buyingPrice",
@@ -52,7 +53,18 @@ const productsCrontroller = {
 
     let product = await Products.findByPk(req.params.productId);
     if (!product) return res.status(404).send("Product  not found");
-    await product.update(req.body, { fields: Object.keys(req.body) });
+    await product.update(
+      _.pick(req.body, [
+        "productname",
+        "productnumber",
+        "imageUrl",
+        "startinginventory",
+        "minimumurequired",
+        "buyingPrice",
+        "sellingPrice",
+        "categoryId",
+      ]),
+    );
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "Product updated!" } });
