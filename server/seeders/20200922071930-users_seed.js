@@ -4,13 +4,13 @@ require("dotenv").config();
 
 const { faker } = require("@faker-js/faker");
 
-const COUNT = 5;
+const Profiles_IDS = [1, 2, 3, 4, 5];
 
 module.exports = {
   up: async (queryInterface) => {
     const pwd = await bcrypt.hash(process.env.DEMO_PASSWORD, 10);
 
-    const usersdata = Array.from({ length: COUNT }, () => ({
+    const usersdata = Profiles_IDS.map((profileId) => ({
       name: faker.person.fullName(),
       username: faker.internet.username(),
       email: faker.internet.email({ provider: "eretailshop.com" }),
@@ -19,7 +19,7 @@ module.exports = {
       password: pwd,
       status: true,
       first_login_flag: true,
-      profileid: faker.number.int({ min: 1, max: 5 }),
+      profileid: profileId,
       createdAt: new Date(),
       updatedAt: new Date(),
     }));

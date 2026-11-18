@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const Products = require("../models").Products;
 const { validate } = require("../models/products");

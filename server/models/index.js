@@ -8,18 +8,16 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
-let sequelize;
-
-if (config) {
-  sequelize = new Sequelize(config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config,
+// config.js only defines some environments (development, test). Fail with a
+// clear message instead of a TypeError when NODE_ENV names another one.
+if (!config) {
+  throw new Error(
+    `No database configuration for NODE_ENV="${env}". ` +
+      "Add it to server/config/config.js or set NODE_ENV to development or test.",
   );
 }
+
+const sequelize = new Sequelize(config);
 
 fs.readdirSync(__dirname)
   .filter((file) => {

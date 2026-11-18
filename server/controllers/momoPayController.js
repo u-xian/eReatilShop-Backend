@@ -2,19 +2,23 @@ require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
 const Base64 = require("js-base64").Base64;
 const axios = require("axios");
+const { createMomoToken } = require("../services/CreateTokenAPI");
 
 const momoPayController = {
   doPayment: async (req, res) => {
     const user_uuid = uuidv4();
     const URL = process.env.MoMoURL + "collection/v1_0/requesttopay";
-    let responseToken = "";
+    // Get the MoMo token directly rather than calling our own /generatetoken
+    // route over HTTP (that route now requires a logged-in user).
+    let momoToken;
     try {
-      responseToken = await axios.post(process.env.MomoTokenURL);
+      momoToken = await createMomoToken();
     } catch (error) {
-      console.log(error);
+      console.error("MoMo token request failed:", error.message);
+      return res.status(502).send("Could not get a token from MoMo.");
     }
 
-    const authToken = "Bearer " + responseToken.data.access_token;
+    const authToken = "Bearer " + momoToken.access_token;
     const config = {
       method: "post",
       headers: {

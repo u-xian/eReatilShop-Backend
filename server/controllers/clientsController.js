@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const Clients = require("../models").Clients;
 const { validate } = require("../models/clients");
 

@@ -1,11 +1,16 @@
 require("dotenv").config();
-const jwt = require("njwt");
+const jwt = require("jsonwebtoken");
 
-//3600000 milliseconds correponds to 3600 sec to 1 hr
-const generateAuthToken = (payload) => {
-  const token = jwt.create(payload, process.env.jwtPrivateKey);
-  token.setExpiration(new Date().getTime() + 3600000);
-  return token.compact();
-};
+// Tokens are signed and verified with the same library (jsonwebtoken) and the
+// same algorithm (HS256). See middleware/auth.js for the verifying side.
+const JWT_ALGORITHM = "HS256";
+const JWT_EXPIRES_IN = "1h";
+
+const generateAuthToken = (payload) =>
+  jwt.sign(payload, process.env.jwtPrivateKey, {
+    algorithm: JWT_ALGORITHM,
+    expiresIn: JWT_EXPIRES_IN,
+  });
 
 module.exports = generateAuthToken;
+module.exports.JWT_ALGORITHM = JWT_ALGORITHM;

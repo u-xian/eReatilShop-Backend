@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { validate } = require("../models/shops");
 const Shops = require("../models").Shops;
@@ -14,7 +13,7 @@ const shopController = {
     if (existingShop)
       return res.status(400).send("Shop with this code already exists");
 
-    const shop = new Shops(
+    const shop = await Shops.create(
       _.pick(req.body, [
         "name",
         "code",
@@ -26,7 +25,6 @@ const shopController = {
         "status",
       ]),
     );
-    shop = await shop.save();
 
     if (!shop) return res.status(404).send("Shop  not found");
     res

@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
       modelName: "Order",
       hooks: {
-        beforeSave: (order) => {
+        beforeCreate: (order) => {
           order.orderNumber = generateInvoiceNumber();
         },
       },

@@ -46,7 +46,6 @@
     "jsonwebtoken": "^9.0.3",
     "lodash": "^4.17.20",
     "morgan": "^1.10.0",
-    "njwt": "^1.0.0",
     "pg": "^8.2.1",
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.37.8",

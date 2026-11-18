@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const _ = require("lodash");
 const { validate } = require("../models/profiles");
 const Profiles = require("../models").Profiles;
@@ -8,9 +7,9 @@ const profileCrontroller = {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const profile = await Profiles.create({
-      profilename: req.body.profilename,
-    });
+    const profile = await Profiles.create(
+      _.pick(req.body, ["profilename", "profile_description"]),
+    );
 
     if (!profile) return res.status(404).send("profile  not found");
     res
@@ -37,7 +36,9 @@ const profileCrontroller = {
 
     let profile = await Profiles.findByPk(req.params.profileId);
     if (!profile) return res.status(404).send("profile  not found");
-    await profile.update(req.body, { fields: Object.keys(req.body) });
+    await profile.update(
+      _.pick(req.body, ["profilename", "profile_description"]),
+    );
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "Profile updated!" } });

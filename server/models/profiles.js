@@ -10,18 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-    
-
     }
   }
   Profiles.init(
     {
       profilename: DataTypes.STRING,
+      profile_description: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "Profiles",
-    }
+    },
   );
   return Profiles;
 };
@@ -29,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
 function validateProfile(profile) {
   const schema = Joi.object({
     profilename: Joi.string().min(2).max(50).required(),
+    profile_description: Joi.string().min(2).max(200).optional(),
   });
 
   return schema.validate(profile);

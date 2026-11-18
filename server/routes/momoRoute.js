@@ -6,7 +6,7 @@ const CreateTokenAPI = require("../services/CreateTokenAPI");
 
 const momoRoute = express.Router();
 
-momoRoute.post("/generatetoken", CreateTokenAPI);
+momoRoute.post("/generatetoken", auth, CreateTokenAPI);
 momoRoute.post("/momopay/pay",auth, momoPayController.doPayment);
 momoRoute.post(
   "/momopay/transactionstatus",auth,

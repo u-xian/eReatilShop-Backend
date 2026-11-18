@@ -43,3 +43,15 @@ cp .env.example .env        # then edit .env with your own values
 npm run db:setup            # creates the database, the tables and the sample data
 npm start
 ```
+
+`jwtPrivateKey` must be set in `.env`: the server will not start without it.
+
+## Tests
+
+The API tests use a separate database (`DB_NAME_TEST` in `.env`). Create it once:
+
+```
+NODE_ENV=test npm run db:create
+NODE_ENV=test npm run migrate
+npm test
+```

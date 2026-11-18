@@ -30,7 +30,10 @@ const saleController = {
 
     let sale = await Sale.findByPk(req.params.saleId);
     if (!sale) return res.status(404).send("Sale not found");
-    await sale.update(req.body, { fields: Object.keys(req.body) });
+
+    await sale.update(
+      _.pick(req.body, ["productId", "sales", "price", "orderId"]),
+    );
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "sale updated!" } });

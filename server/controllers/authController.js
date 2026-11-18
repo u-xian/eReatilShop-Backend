@@ -9,8 +9,12 @@ const authCrontroller = {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let user = await Users.findOne({ where: { username: req.body.username } });
-    if (!user) return res.status(400).send("Invalid username or password!");
+    // The default scope hides the password hash, so ask for it explicitly.
+    let user = await Users.scope("withPassword").findOne({
+      where: { username: req.body.username },
+    });
+    if (!user || !user.password)
+      return res.status(400).send("Invalid username or password!");
 
     const validatePassword = await bcrypt.compare(
       req.body.password,
@@ -29,12 +33,21 @@ const authCrontroller = {
     res.send(token);
   },
   updateFirstLogin: async (req, res) => {
-    const salt = await bcrypt.genSalt(10);
-    const encryptPwd = await bcrypt.hash(req.body.confirmpassword, salt);
+    // Runs after the auth middleware: users may only change their own password.
+    if (String(req.user.userid) !== String(req.params.userId))
+      return res
+        .status(403)
+        .send("Access denied. You can only change your own password.");
+
+    const { error } = validatePasswordChange(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
     let user = await Users.findByPk(req.params.userId);
     if (!user) return res.status(404).send("user  not found");
+
+    const salt = await bcrypt.genSalt(10);
+    const encryptPwd = await bcrypt.hash(req.body.password, salt);
     await user.update({ first_login_flag: false, password: encryptPwd });
-    user = await user.save();
     res
       .status(200)
       .json({ data: { status: 1, statusMessage: "User updated!" } });
@@ -48,6 +61,18 @@ function validate(req) {
   });
 
   return schema.validate(req);
+}
+
+function validatePasswordChange(body) {
+  const schema = Joi.object({
+    password: Joi.string().min(8).max(255).required(),
+    confirmpassword: Joi.string()
+      .valid(Joi.ref("password"))
+      .required()
+      .messages({ "any.only": "Passwords do not match" }),
+  });
+
+  return schema.validate(body);
 }
 
 module.exports = authCrontroller;
